@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Mail\MyTestEmail;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,12 +16,38 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    /*return view('welcome');*/
+    return view('auth.login');
+});
+
+Route::get('/testroute', function() {
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+    // The email sending is done using the to method on the Mail facade
+    $status = Mail::to('shahir.rahman3502@gmail.com')->send(new MyTestEmail($details));
+    echo "Mail send success";
+    /*try{
+        $status = Mail::to('testreceiver@gmail.com')->send(new MyTestEmail($details));
+        return $status;
+    }catch (Exception $e){
+        throw new Error($e);
+    }*/
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// user routes
+Route::prefix('user')->group(function(){
+    Route::get('form', [\App\Http\Controllers\User\UserController::class, 'create'])->name('user.form');
+    Route::post('form', [\App\Http\Controllers\User\UserController::class, 'store'])->name('user.form.submit');
+
+    Route::get('current-status', [\App\Http\Controllers\User\UserController::class, 'currentStatusIndex'])->name('current-status.index');
+    Route::post('current-status', [\App\Http\Controllers\User\UserController::class, 'currentStatusPost'])->name('current-status.post');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,8 +64,8 @@ Route::middleware('auth')->group(function () {
         Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\Sya\RoleController::class, 'addPermissionToRole']);
         Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\Sya\RoleController::class, 'givePermissionToRole']);
 
-        Route::resource('users', App\Http\Controllers\UserController::class);
-        Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+        Route::resource('users', \App\Http\Controllers\Sya\UserController::class);
+        Route::get('users/{userId}/delete', [\App\Http\Controllers\Sya\UserController::class, 'destroy']);
 
     });
 
@@ -61,11 +88,37 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['middleware' => ['role:admin-cell']], function() {
-        Route::get('/admincell-page',function (){
-            return view('pages.admin-cell');
-        })->name('admincell-page');
+        Route::get('/admincell-page',[App\Http\Controllers\Sya\AdminCellController::class,'index'])->name('admincell-page');
+
+        Route::post('/admincell',[App\Http\Controllers\Sya\AdminCellController::class,'store'])->name('admincell.store');
+        Route::get('/admincell/{formNo}/{app_id}',[App\Http\Controllers\Sya\AdminCellController::class,'show'])->name('admincell.show');
+        Route::put('/admincell/{formNo}',[App\Http\Controllers\Sya\AdminCellController::class,'update'])->name('admincell.update');
+        Route::get('/admincell/{formNo}/edit',[App\Http\Controllers\Sya\AdminCellController::class,'edit'])->name('admincell.edit');
+
     });
 
+    Route::group(['middleware' => ['role:dept-approval']], function() {
+        Route::resource('dept-approval',\App\Http\Controllers\Sya\DeptApprovalController::class)->names('deptapproval');
+        Route::get('/dept-approval/{formNo}/{app_id}',[App\Http\Controllers\Sya\DeptApprovalController::class,'show'])->name('deptapproval.show');
+
+    });
+
+    Route::group(['middleware' => ['role:id-section']], function() {
+        Route::resource('idsection',\App\Http\Controllers\Sya\IdSectionController::class)->names('idsection');
+        Route::get('/idsection/{formNo}/{app_id}',[App\Http\Controllers\Sya\IdSectionController::class,'show'])->name('idsection.show');
+        Route::get('email-page',[App\Http\Controllers\Sya\IdSectionController::class,'emailPage'])->name('idsection.email');
+        Route::post('email-page',[App\Http\Controllers\Sya\IdSectionController::class,'sendEmail'])->name('idsection.sendemail');
+    });
+
+    Route::group(['middleware' => ['role:gm-security']], function() {
+        Route::resource('gmsecurity',\App\Http\Controllers\Sya\SecurityDivisionController::class)->names('gmsecurity');
+        Route::get('/gmsecurity/{formNo}/{app_id}',[App\Http\Controllers\Sya\SecurityDivisionController::class,'show'])->name('gmsecurity.show');
+    });
+
+    Route::get('card-current-status',[\App\Http\Controllers\Sya\CurrentStatusController::class, 'index'])->name('admin-card-status');
+
 });
+
+
 
 require __DIR__.'/auth.php';

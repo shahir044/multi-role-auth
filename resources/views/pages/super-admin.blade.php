@@ -1,1 +1,4 @@
-<h1>I am in Super Admin Role</h1>
+@extends('layouts.common')
+@section('content')
+    <h1>Hi I am Super Admin</h1>
+@endsection

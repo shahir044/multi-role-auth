@@ -1,6 +1,6 @@
-@extends('role-permission.layouts.app')
+@extends('layouts.common')
 @section('content')
-    <div class="container mt-5">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
 

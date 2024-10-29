@@ -2,6 +2,18 @@
 /*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJjdXN0b20uY3NzIn0= */
 
 /*# sourceMappingURL=custom.css.map */
+
+@import url(https://fonts.bunny.net/css?family=figtree:400,500,600,700);
 body{
-    font-family: 'Figtree',"Nunito", "Segoe UI", arial;
+    font-family: 'Figtree', "Nunito", "Segoe UI", arial, serif;
+}
+label{
+    font-weight: 600;
+}
+.theme-white .card.card-primary {
+    border-top: 4px solid #6777ef;
+}
+
+.text-danger, .text-danger-all *, .text-danger-all *:before, .text-danger-all *:after {
+    font-size: 1.22rem;
 }

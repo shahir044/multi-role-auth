@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sya;
 
+use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,21 +29,30 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
-        return view('role-permission.user.create', ['roles' => $roles]);
+        $depts = Department::orderBy('name')->get();
+        $desgs = Designation::orderBy('name')->get();
+        return view('role-permission.user.create', ['roles' => $roles,'depts'=> $depts,'desgs' => $desgs]);
     }
 
     public function store(Request $request)
     {
+//        dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:20',
-            'roles' => 'required'
+            'mobile'=> 'required',
+            'roles' => 'required',
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'pg_no' => $request->pg_no,
             'email' => $request->email,
+            'mobile' => $request->mobile,
+            'nid' => $request->nid,
+            'dept' => $request->dept,
+            'desig' => $request->desig,
             'password' => Hash::make($request->password),
         ]);
 

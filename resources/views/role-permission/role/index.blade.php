@@ -1,4 +1,4 @@
-@extends('role-permission.layouts.app')
+@extends('layouts.common')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Profile') }}
@@ -25,10 +25,13 @@
                         <div class="card-header">
                             <h4>
                                 Roles
+
+                            </h4>
+                            <div class="card-header-action">
                                 @can('create role')
                                     <a href="{{ url('roles/create') }}" class="btn btn-primary  float-end">Add Role</a>
                                 @endcan
-                            </h4>
+                            </div>
                         </div>
                         <div class="card-body">
 

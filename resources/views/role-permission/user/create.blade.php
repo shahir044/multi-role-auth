@@ -1,6 +1,6 @@
-@extends('role-permission.layouts.app')
+@extends('layouts.common')
 @section('content')
-    <div class="container mt-5">
+    <div class="container ">
         <div class="row">
             <div class="col-md-12">
 
@@ -23,8 +23,12 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="">Name</label>
+                                <label for="">Full Name</label>
                                 <input type="text" name="name" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="">PG No</label>
+                                <input type="text" name="pg_no" class="form-control" />
                             </div>
                             <div class="mb-3">
                                 <label for="">Email</label>
@@ -32,7 +36,32 @@
                             </div>
                             <div class="mb-3">
                                 <label for="">Password</label>
-                                <input type="text" name="password" class="form-control" />
+                                <input type="password" name="password" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label>Designation</label><span class="text-danger">*</span>
+                                <select class="form-control" name="desig" select2 required>
+                                    @foreach ($desgs as $desg)
+                                        <option value="{{$desg->name}}">{{$desg->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>Department</label><span class="text-danger">*</span>
+                                <select class="form-control" id="dept" name="dept" select2 required>
+                                    @foreach ($depts as $dept)
+                                        <option value="{{$dept->name}}">{{$dept->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>Mobile Number (11 Digit)</label><span class="text-danger">*</span>
+                                <input id="mobile" name="mobile" type="text" minlength="11"
+                                       maxlength="11" placeholder="017xxx" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>National ID Card no.</label><span class="text-danger">*</span>
+                                <input id="nid" name="nid" type="number" placeholder="" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="">Roles</label>
@@ -44,7 +73,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Save User</button>
                             </div>
                         </form>
                     </div>

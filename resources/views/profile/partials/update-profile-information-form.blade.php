@@ -33,7 +33,7 @@
         <div>
             <!-- Mobile -->
             <x-input-label for="mobile" :value="__('Mobile')" />
-            <x-text-input id="mobile" name="mobile" type="text" class="mt-1 block w-full" :value="old('mobile', $user->mobile)" required />
+            <x-text-input id="mobile" name="mobile" type="text" class="mt-1 block w-full" :value="old('mobile', $user->mobile)" required/>
             <x-input-error class="mt-2" :messages="$errors->get('mobile')" />
         </div>
 

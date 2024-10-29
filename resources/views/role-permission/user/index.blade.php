@@ -1,6 +1,6 @@
-@extends('role-permission.layouts.app')
+@extends('layouts.common')
 @section('content')
-    <div class="container mt-5">
+    <div class="container ">
         <a href="{{ url('roles') }}" class="btn btn-primary mx-1">Roles</a>
         <a href="{{ url('permissions') }}" class="btn btn-info mx-1">Permissions</a>
         <a href="{{ url('users') }}" class="btn btn-warning mx-1">Users</a>
@@ -17,21 +17,24 @@
                 <div class="card mt-3">
                     <div class="card-header">
                         <h4>Users
+
+                        </h4>
+                        <div class="card-header-action">
                             @can('create user')
                                 <a href="{{ url('users/create') }}" class="btn btn-primary float-end">Add User</a>
                             @endcan
-                        </h4>
+                        </div>
                     </div>
                     <div class="card-body">
 
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Roles</th>
-                                <th>Action</th>
+                                <th width="20%">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,7 +46,7 @@
                                     <td>
                                         @if (!empty($user->getRoleNames()))
                                             @foreach ($user->getRoleNames() as $rolename)
-                                                <label class="badge bg-primary mx-1">{{ $rolename }}</label>
+                                                <label class="badge bg-primary mx-1 my-1">{{ $rolename }}</label>
                                             @endforeach
                                         @endif
                                     </td>

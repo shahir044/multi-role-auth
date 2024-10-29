@@ -1,6 +1,6 @@
-@extends('role-permission.layouts.app')
+@extends('layouts.common')
 @section('content')
-    <div class="container mt-5">
+    <div class="container">
         <a href="{{ url('roles') }}" class="btn btn-primary mx-1">Roles</a>
         <a href="{{ url('permissions') }}" class="btn btn-info mx-1">Permissions</a>
         <a href="{{ url('users') }}" class="btn btn-warning mx-1">Users</a>
@@ -21,14 +21,14 @@
 
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h4>Permissions
+                        <h4>Permissions</h4>
+                        <div class="card-header-action">
                             @can('create permission')
                                 <a href="{{ url('permissions/create') }}" class="btn btn-primary float-end">Add Permission</a>
                             @endcan
-                        </h4>
+                        </div>
                     </div>
                     <div class="card-body">
-
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
